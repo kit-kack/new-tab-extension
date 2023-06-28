@@ -1,0 +1,15 @@
+{
+  "name": "MyNewPage",
+  "description": "This is my new-page extension,please use it with 'Sea Foam' theme",
+  "version": "1.0",
+  "manifest_version": 3,
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "action": {
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+    "storage"
+  ]
+}
