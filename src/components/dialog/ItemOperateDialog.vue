@@ -67,32 +67,35 @@ function handleOperateItem(){
         // 修改
         if($store.pin > -1){
           data.value[$store.pin].children[$store.index] = core;
-          restore();
         }else{
           unknownData.value[$store.index] = core;
-          restoreUnknownData()
         }
       return;
     }
     // 先移除旧
     if($store.pin > -1){
       data.value[$store.pin].children.splice($store.index,1)
-      restore();
     }else{
       unknownData.value.splice($store.index,1)
-      restoreUnknownData()
     }
-    // 再添加
-  }
-  // 添加元素
-  if(item.value.pin === undefined){
-    unknownData.value.push(core)
-    restoreUnknownData()
+    // 添加元素
+    if(item.value.pin === undefined){
+      unknownData.value.push(core)
+    }else{
+      data.value[item.value.pin].children.push(core)
+    }
+    item.value = {}
   }else{
-    data.value[item.value.pin].children.push(core)
-    restore();
+    // 添加元素
+    if(item.value.pin === undefined){
+      unknownData.value.push(core)
+      restoreUnknownData();
+    }else{
+      data.value[item.value.pin].children.push(core)
+      restore();
+    }
+    item.value = {}
   }
-  item.value = {}
 }
 
 

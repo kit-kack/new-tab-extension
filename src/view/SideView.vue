@@ -138,8 +138,6 @@ function handleSelectedFile(){
           data:data.value,
           "unknown-data": unknownData.value
         })
-        console.log(data.value)
-        console.log(unknownData.value)
         chrome.storage.sync.get(["data","unknown-data"],result=>{
           console.log(result)
         })

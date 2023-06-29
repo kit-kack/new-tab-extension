@@ -1,5 +1,5 @@
 <template>
-  <el-button text style="padding: 0 4px 0 4px;margin-bottom: 10px"
+  <el-button text style="padding: 0 4px 0 4px;margin-bottom: 3vh"
              @click="handleDirectToWeb"
             @dblclick="handleRefreshCache()"
   >
@@ -20,7 +20,7 @@
 <script setup>
 import {computed, nextTick, ref} from "vue";
 import {$store} from "../js/store.js";
-import {data, icos, restore, restoreUnknownData, unknownData} from "../js/db.js";
+import {data, icos, unknownData} from "../js/db.js";
 import {getHostname} from "../js/preset.js";
 
 
@@ -51,10 +51,8 @@ function handleDeleteItem(){
   localStorage.removeItem("ico-"+getHostname(item.value.url))
   if(props.pin === -1){
     unknownData.value.splice(props.index,1)
-    restoreUnknownData();
   }else{
     data.value[props.pin].children.splice(props.index,1)
-    restore()
   }
 
 }
@@ -100,22 +98,18 @@ function handleRefreshCache(){
   height: 18px;
   font-size: 16px;
   text-align: left;
-  font-family: Consolas
+  font-family: Consolas;
+  color: #444;
 }
 #dark .text{
   color: white;
 }
-.dark .text{
-  color: #606266;
-}
+
 .hover-text{
   color:white;
 }
 #dark .hover-text{
   color:#ccc;
-}
-.dark .hover-text{
-  color: white;
 }
 .edit{
   width: 100px;

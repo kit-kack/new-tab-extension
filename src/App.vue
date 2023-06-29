@@ -14,7 +14,7 @@
               <svg t="1687805397564" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4108" width="200" height="200"><path d="M235.9 0C105.6 0 0 105.6 0 235.9s105.6 235.9 235.9 235.9 235.9-105.6 235.9-235.9S366.1 0 235.9 0z m0 379.7C156.4 379.7 92 315.3 92 235.9S156.4 92 235.9 92s143.8 64.4 143.8 143.8-64.4 143.9-143.8 143.9zM992 174.7H607.3c-17.6 0-32-14.4-32-32v-28c0-17.6 14.4-32 32-32H992c17.6 0 32 14.4 32 32v28c0 17.6-14.4 32-32 32zM992 393.3H607.3c-17.6 0-32-14.4-32-32v-28c0-17.6 14.4-32 32-32H992c17.6 0 32 14.4 32 32v28c0 17.6-14.4 32-32 32z" p-id="4109" fill="#8a8a8a"></path><path d="M235.9 552.3C105.6 552.3 0 657.9 0 788.1S105.6 1024 235.9 1024s235.9-105.6 235.9-235.9-105.7-235.8-235.9-235.8z m0 379.7C156.4 932 92 867.6 92 788.1s64.4-143.8 143.8-143.8 143.8 64.4 143.8 143.8S315.3 932 235.9 932zM992 727H607.3c-17.6 0-32-14.4-32-32v-28c0-17.6 14.4-32 32-32H992c17.6 0 32 14.4 32 32v28c0 17.6-14.4 32-32 32zM992 945.6H607.3c-17.6 0-32-14.4-32-32v-28c0-17.6 14.4-32 32-32H992c17.6 0 32 14.4 32 32v28c0 17.6-14.4 32-32 32z" p-id="4110" fill="#8a8a8a"></path></svg>
             </template>
           </el-button>
-          <el-button text plain  circle style="width: 50px;height: 50px" @click="$store.edit = false">
+          <el-button text plain  circle style="width: 50px;height: 50px" @click="handleEdit()">
             <template #icon>
               <svg t="1687666590229" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8403" width="200" height="200"><path d="M878.933333 282.737778a53.475556 53.475556 0 0 0-69.973333 0L398.222222 641.706667l-162.133333-161.848889a52.906667 52.906667 0 0 0-69.973333 0 52.906667 52.906667 0 0 0 0 69.973333l197.12 197.12a53.191111 53.191111 0 0 0 69.973333 0L878.933333 352.711111a52.906667 52.906667 0 0 0 0-69.973333z" fill="#999999" p-id="8404"></path></svg>          </template>
           </el-button>
@@ -41,7 +41,7 @@
       </el-space>
     </div>
     <template v-if="$store.edit">
-      <h6 class="refresh-info">tip: 双击网站选项标签来刷新缓存图标</h6>
+      <h6 class="refresh-info">tip: 双击网站选项卡来刷新缓存图标</h6>
     </template>
     <input-dialog title="创建类别" v-model="createType" @ok="handleCreateType">
       <material-input label="类别" v-model="newTypeValue"  />
@@ -69,7 +69,7 @@
 import WebView from "./view/WebView.vue";
 import {ref} from "vue";
 import {$store} from "./js/store.js";
-import {data, restore} from "./js/db.js";
+import {data, unknownData} from "./js/db.js";
 import CreateOrModifyItemDialog from "./components/dialog/ItemOperateDialog.vue";
 import SideView from "./view/SideView.vue";
 
@@ -86,10 +86,16 @@ function handleCreateType(){
       name: newTypeValue.value,
       children: []
     })
-    restore()
     newTypeValue.value = undefined;
   }
+}
 
+function handleEdit(){
+  $store.edit = false;
+  chrome.storage.sync.set({
+    data: data.value,
+    "unknown-data": unknownData.value
+  })
 }
 </script>
 

@@ -1,10 +1,15 @@
 <template>
   <template v-for="(parent,pin) in data">
     <div  v-if="(parent.children!== null && parent.children.length > 0) || $store.edit"  class="nav clearfix">
-      <el-text truncated class="left-nav" >
-        {{parent.name}}
-      </el-text>
-      <div orientation="horizontal" class="right-nav" @dragstart="()=>false" >
+      <template v-if="$store.edit">
+        <el-input class="left-nav" v-model="parent.name"/>
+      </template>
+      <template v-else>
+        <el-text truncated class="left-nav" >
+          {{parent.name}}
+        </el-text>
+      </template>
+      <div  class="right-nav" @dragstart="()=>false" >
         <template v-if="parent.children!== null && parent.children.length > 0">
           <template v-if="$store.edit">
             <template v-for="(newp,newi) in splitChildren(parent.children)">
@@ -79,7 +84,7 @@
 
 <script setup>
 
-import {data, restore, restoreUnknownData, unknownData} from "../js/db.js";
+import {data, unknownData} from "../js/db.js";
 import {$store} from "../js/store.js";
 import { Container, Draggable } from "vue3-smooth-dnd";
 function handleDeleteType(type){
@@ -89,7 +94,6 @@ function handleDeleteType(type){
       break;
     }
   }
-  restore();
 }
 
 /**
@@ -117,19 +121,15 @@ function dealWithDrag(payload){
   if(payload.from > -1){
     core = data.value[payload.from].children[payload.fromIndex]
     data.value[payload.from].children.splice(payload.fromIndex,1)
-    restore();
   }else{
     core = unknownData.value[payload.fromIndex]
     unknownData.value.splice(payload.fromIndex,1)
-    restoreUnknownData();
   }
   // add to
   if(payload.to > -1){
     data.value[payload.to].children.splice(payload.toIndex,0,core)
-    restore();
   }else{
     unknownData.value.splice(payload.toIndex,0,core)
-    restoreUnknownData();
   }
 }
 
@@ -157,6 +157,12 @@ function getChildPayload(index,pin){
   margin-right: 10px;
   font-size: 12px;
   text-align: left;
+  --el-input-bg-color: transparent;
+  --el-input-border-color: transparent;
+  --el-input-hover-border-color: transparent;
+  --el-input-focus-border-color: transparent;
+  --el-input-border-radius: 0;
+  --el-input-text-color: var(--search-text-color) !important
 }
 .dark .left-nav{
   color: #606266;
